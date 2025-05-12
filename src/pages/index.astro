@@ -1,0 +1,65 @@
+---
+import "../styles/global.css";
+import '@fontsource/atkinson-hyperlegible/400.css';
+import '@fontsource/atkinson-hyperlegible/700.css';
+
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import Ccicon from "../components/CC-Icon.astro";
+
+const allImages = await getCollection("images");
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Astro</title>
+	</head>
+	<body class="max-5xl:container mx-auto bg-secondary text-secondary-content font-display">
+		<section class="px-2 py-4 columns-sm gap-8">
+		{
+			allImages.map(image => (
+				<div>
+					<figure class="break-inside-avoid mb-4 rounded-xs shadow bg-primary text-primary-content border-primary border-y-4">
+						{image.data.title &&
+							<h2 class="px-6 py-2 text-2xl capitalize">{image.data.title}</h2>
+						}
+						<Image src={image.data.image} alt={image.data.description ?? "no image description provided"}
+							   widths={[400, 1200, image.data.image.width]}
+							   sizes={`(max-width: 720px) 400px, (max-width: 2000px) 1200px, ${image.data.image.width}px`} />
+						<figcaption class="p-6 pt-2">
+							{image.data.author &&
+								(image.data.src ?
+									<span>
+										Image by
+										<a class="underline active:text-accent" href={image.data.src}
+										   target="_blank">{image.data.author}</a>
+									</span> :
+									<span>Image by {image.data.author}</span>)
+							}
+
+							<span class="flex gap-1 flex-wrap mt-1 -mb-2">
+								{image.data.license &&
+									<span class="flex gap-1" title={`Licensed under ${image.data.license.toUpperCase()}`}>
+										<Ccicon type={image.data.license.toLowerCase()} />
+									</span>
+								}
+
+								{image.data.tags && image.data.tags.map(tag =>
+										<span class="bg-accent text-accent-content py-.5 px-2 h-6 text-xs rounded-full grid place-items-center">
+											{tag}
+										</span>
+									)
+								}
+							</span>
+						</figcaption>
+					</figure>
+				</div>
+			))
+		}
+		</section>
+	</body>
+</html>
