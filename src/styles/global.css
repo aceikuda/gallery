@@ -9,7 +9,7 @@
     --color-accent-content: #ff0;
 }
 
-#imgtag, #imgtag > * {
+.imgtag {
   font-weight: 500;
 }
 
