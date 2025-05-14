@@ -54,7 +54,7 @@ const allImages = await getCollection("images");
 								}
 
 								{image.data.tags && image.data.tags.map(tag =>
-										<span class="bg-accent text-accent-content py-.5 px-2 h-6 text-xs rounded-full grid place-items-center">
+										<span class="bg-accent text-accent-content py-.5 px-2 h-6 text-xs rounded-full grid place-items-center" id="imgtag">
 											{tag}
 										</span>
 									)
